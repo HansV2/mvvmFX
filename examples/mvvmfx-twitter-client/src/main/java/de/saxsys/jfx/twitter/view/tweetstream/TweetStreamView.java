@@ -3,6 +3,8 @@ package de.saxsys.jfx.twitter.view.tweetstream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
@@ -23,22 +25,35 @@ public class TweetStreamView extends View<TweetStreamViewModel> {
 	private ViewLoader viewLoader;
 
 	@FXML
-	private ListView<Integer> tweetsListView;
+	private ListView<String> tweetsListView;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		tweetsListView.setCellFactory(new ViewListCellFactory<Integer>() {
+		// Factory for create View for every element in tweetslist
+		tweetsListView.setCellFactory(new ViewListCellFactory<String>() {
 			@Override
-			public ViewTuple<? extends ViewModel> map(Integer element) {
+			public ViewTuple<? extends ViewModel> map(String element) {
 				ViewTuple<TweetViewModel> loadViewTuple = viewLoader
 						.loadViewTuple(TweetView.class);
 				loadViewTuple.getCodeBehind().getViewModel()
-						.setTweetId(element);
+						.setTweetId(Integer.parseInt(element));
 				return loadViewTuple;
 			}
 		});
+		// Bind the lists
 		tweetsListView.itemsProperty().bind(
-				getViewModel().displayedTweetsProperty());
+				getViewModel().displayedTweetsProperty().stringListProperty());
+
+		// Enable the selection mechanism
+		tweetsListView.getSelectionModel().selectedIndexProperty()
+				.addListener(new ChangeListener<Number>() {
+					@Override
+					public void changed(ObservableValue<? extends Number> bean,
+							Number old, Number selection) {
+						tweetsListView.getSelectionModel().select(
+								selection.intValue());
+					}
+				});
 	}
 
 }

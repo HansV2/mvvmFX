@@ -18,4 +18,13 @@ public class UserService {
 	public List<User> getUsers() {
 		return users;
 	}
+
+	public User getUserForId(int userId) {
+		for (User user : users) {
+			if (user.getId() == userId) {
+				return user;
+			}
+		}
+		return null;
+	}
 }

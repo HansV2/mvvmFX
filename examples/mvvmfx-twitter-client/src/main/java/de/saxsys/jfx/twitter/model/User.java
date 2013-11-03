@@ -1,9 +1,11 @@
 package de.saxsys.jfx.twitter.model;
 
 import java.util.List;
+import java.util.Random;
 
 public class User {
 
+	private int id;
 	private String userName;
 	private String password;
 
@@ -25,6 +27,18 @@ public class User {
 
 	public String getPassword() {
 		return password;
+	}
+
+	/**
+	 * Gets the technical id.
+	 * 
+	 * @return technical id
+	 */
+	public int getId() {
+		if (id == 0) {
+			id = new Random().nextInt();
+		}
+		return id;
 	}
 
 }

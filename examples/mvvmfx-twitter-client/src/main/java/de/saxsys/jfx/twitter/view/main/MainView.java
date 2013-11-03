@@ -3,6 +3,7 @@ package de.saxsys.jfx.twitter.view.main;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,6 +18,7 @@ import javax.inject.Inject;
 import de.saxsys.jfx.mvvm.base.view.View;
 import de.saxsys.jfx.mvvm.viewloader.ViewLoader;
 import de.saxsys.jfx.mvvm.viewloader.ViewTuple;
+import de.saxsys.jfx.twitter.model.AuthenticationService;
 import de.saxsys.jfx.twitter.view.login.LoginView;
 import de.saxsys.jfx.twitter.view.tweetstream.TweetStreamView;
 import de.saxsys.jfx.twitter.viewmodel.login.LoginViewModel;
@@ -39,6 +41,9 @@ public class MainView extends View<MainViewModel> {
 	// fx:id="contentStackPane"
 	private StackPane contentStackPane; // Value injected by FXMLLoader
 
+	@Inject
+	private AuthenticationService authService;
+
 	@FXML
 	// Handler for MenuItem[javafx.scene.control.MenuItem@22131fde] onAction
 	public void aboutButtonPressed(ActionEvent event) {
@@ -48,7 +53,7 @@ public class MainView extends View<MainViewModel> {
 	@FXML
 	// Handler for MenuItem[javafx.scene.control.MenuItem@1ce7fbb5] onAction
 	public void applicationClosedButtonPressed(ActionEvent event) {
-		// handle the event here
+		Platform.exit();
 	}
 
 	@FXML
@@ -77,7 +82,6 @@ public class MainView extends View<MainViewModel> {
 		// Disable bars when login
 		BooleanBinding disableBinding = getViewModel()
 				.applicationStateProperty().isEqualTo(ApplicationState.LOGIN);
-		menuBar.disableProperty().bind(disableBinding);
 		toolBar.disableProperty().bind(disableBinding);
 
 		// Application Window
@@ -113,8 +117,11 @@ public class MainView extends View<MainViewModel> {
 	}
 
 	private void navigateToUserTweets() {
-		// TODO Auto-generated method stub
-
+		ViewTuple<TweetStreamViewModel> loadViewTuple = viewLoader
+				.loadViewTuple(TweetStreamView.class);
+		loadViewTuple.getCodeBehind().getViewModel()
+				.setUserId(authService.getAuthenticatedUser().getId());
+		contentStackPane.getChildren().add(loadViewTuple.getView());
 	}
 
 	private void navigateToStats() {
@@ -125,6 +132,7 @@ public class MainView extends View<MainViewModel> {
 	private void navigateToStream() {
 		ViewTuple<TweetStreamViewModel> loadViewTuple = viewLoader
 				.loadViewTuple(TweetStreamView.class);
+		loadViewTuple.getCodeBehind().getViewModel().setUserId(null);
 		contentStackPane.getChildren().add(loadViewTuple.getView());
 	}
 

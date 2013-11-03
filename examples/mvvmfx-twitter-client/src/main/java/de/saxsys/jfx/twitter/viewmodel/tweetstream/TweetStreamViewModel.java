@@ -1,62 +1,53 @@
 package de.saxsys.jfx.twitter.viewmodel.tweetstream;
 
 import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 
 import javax.inject.Inject;
 
 import de.saxsys.jfx.mvvm.base.viewmodel.ViewModel;
-import de.saxsys.jfx.twitter.model.AuthenticationService;
+import de.saxsys.jfx.mvvm.base.viewmodel.util.itemlist.ModelToStringMapper;
+import de.saxsys.jfx.mvvm.base.viewmodel.util.itemlist.SelectableItemList;
+import de.saxsys.jfx.mvvm.base.viewmodel.util.itemlist.SelectableStringList;
 import de.saxsys.jfx.twitter.model.Tweet;
 import de.saxsys.jfx.twitter.model.TweetService;
-import de.saxsys.jfx.twitter.model.User;
+import de.saxsys.jfx.twitter.model.UserService;
 
 public class TweetStreamViewModel implements ViewModel {
 
-	private AuthenticationService authService;
+	private UserService userService;
 
 	private TweetService tweetService;
 
-	private ListProperty<Integer> displayedTweets = new SimpleListProperty<>(
-			FXCollections.<Integer> observableArrayList());
+	private SelectableItemList<Tweet> displayedTweets;
 
 	@Inject
-	public TweetStreamViewModel(AuthenticationService authService,
+	public TweetStreamViewModel(UserService userService,
 			TweetService tweetService) {
-		this.authService = authService;
+		this.userService = userService;
 		this.tweetService = tweetService;
-		initTweetList();
+		displayedTweets = new SelectableItemList<Tweet>(
+				FXCollections.<Tweet> observableArrayList(),
+				new ModelToStringMapper<Tweet>() {
+					@Override
+					public String toString(Tweet tweet) {
+						return Integer.toString(tweet.getId());
+					}
+				});
 	}
 
-	private void initTweetList() {
-		ListProperty<Tweet> tweetsForUserProperty = tweetService
-				.tweetsForUserProperty(authService.getAuthenticatedUser());
-		mapLists();
-		tweetsForUserProperty.addListener(new ListChangeListener<Tweet>() {
-			@Override
-			public void onChanged(
-					javafx.collections.ListChangeListener.Change<? extends Tweet> event) {
-				while (event.next()) {
-					mapLists();
-				}
-			}
-		});
-	}
-
-	private void mapLists() {
-		displayedTweets.clear();
-		User authenticatedUser = authService.getAuthenticatedUser();
-		ListProperty<Tweet> tweetsForUserProperty = tweetService
-				.tweetsForUserProperty(authenticatedUser);
-
-		for (Tweet tweet : tweetsForUserProperty) {
-			displayedTweets.add(tweet.getId());
+	public void setUserId(Integer userId) {
+		ListProperty<Tweet> tweets;
+		if (userId != null) {
+			tweets = tweetService.tweetsForUserProperty(userService
+					.getUserForId(userId));
+		} else {
+			tweets = tweetService.tweetsProperty();
 		}
+		displayedTweets.itemListProperty().set(tweets);
 	}
 
-	public ListProperty<Integer> displayedTweetsProperty() {
+	public SelectableStringList displayedTweetsProperty() {
 		return displayedTweets;
 	}
 

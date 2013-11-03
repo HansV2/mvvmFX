@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -16,4 +17,7 @@
     </Label>
     <Label id="passwordLabel" fx:id="tweetLabel" text="Label" VBox.margin="$x1" />
   </children>
+  <stylesheets>
+    <URL value="@TweetView.css" />
+  </stylesheets>
 </VBox>
