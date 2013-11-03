@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="de.saxsys.jfx.twitter.view.login.LoginView">
+  <!-- TODO Add Nodes -->
+  <children>
+    <Label text="Name: name Password: password">
+      <VBox.margin>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" fx:id="x1" />
+      </VBox.margin>
+    </Label>
+    <TextField fx:id="usernameField" prefWidth="200.0" promptText="Username" VBox.margin="$x1" />
+    <PasswordField fx:id="passwordField" prefWidth="200.0" promptText="Password" VBox.margin="$x1" />
+    <BorderPane prefHeight="-1.0" prefWidth="-1.0">
+      <left>
+        <Label fx:id="loginFailedLabel" blendMode="SRC_OVER" disable="false" labelFor="$loginFailedLabel" style="&#10;" text="Login failed" textFill="RED" visible="true" BorderPane.margin="$x1" />
+      </left>
+      <right>
+        <Button mnemonicParsing="false" onAction="#loginButtonPressed" text="Login" BorderPane.margin="$x1" />
+      </right>
+    </BorderPane>
+  </children>
+</VBox>

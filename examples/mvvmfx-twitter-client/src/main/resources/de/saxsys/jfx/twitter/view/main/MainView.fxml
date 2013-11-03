@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="de.saxsys.jfx.twitter.view.main.MainView">
+  <!-- TODO Add Nodes -->
+  <children>
+    <MenuBar fx:id="menuBar">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" onAction="#applicationClosedButtonPressed" text="Close" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <ToolBar id="toolbar" fx:id="toolBar">
+      <items>
+        <Button mnemonicParsing="false" onAction="#profileButtonPressed" text="Profile" />
+        <Button mnemonicParsing="false" onAction="#streamButtonPressed" text="Stream" />
+        <Button mnemonicParsing="false" onAction="#statisticsButtonPressed" text="Statistics" />
+      </items>
+    </ToolBar>
+    <ScrollPane id="mainScrollPane" fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="300.0" prefWidth="300.0" VBox.vgrow="ALWAYS">
+      <content>
+        <StackPane id="mainPane" fx:id="contentStackPane" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" />
+      </content>
+    </ScrollPane>
+  </children>
+</VBox>

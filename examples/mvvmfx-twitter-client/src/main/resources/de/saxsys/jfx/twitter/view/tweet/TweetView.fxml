@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox minWidth="261.0" xmlns:fx="http://javafx.com/fxml" fx:controller="de.saxsys.jfx.twitter.view.tweet.TweetView">
+  <!-- TODO Add Nodes -->
+  <children>
+    <Label fx:id="userNameLabel" text="Label">
+      <VBox.margin>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" fx:id="x1" />
+      </VBox.margin>
+    </Label>
+    <Label id="passwordLabel" fx:id="tweetLabel" text="Label" VBox.margin="$x1" />
+  </children>
+</VBox>
